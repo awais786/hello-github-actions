@@ -18,7 +18,6 @@ jobs:
           mysql root password: 'password'
       run: |
         sudo /etc/init.d/mysql start
-      - name: Set ENV
         run: echo "MYSQL_PASS=\"password\"" > .env
 
       - name: Test

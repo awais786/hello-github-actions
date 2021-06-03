@@ -1,19 +1,42 @@
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+name: Master
+
 jobs:
-  build:
-    runs-on: ubuntu-20.04
-    # ... some other config ...
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-    - # ... some prepare steps, like action/checkout, run some script without MySQL, etc.
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Shutdown Ubuntu MySQL (SUDO)
-      run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+      - name: Use Node.js v12
+        uses: actions/setup-node@v1.4.0
+        with:
+          node-version: 12
 
-    - # ... some steps before set-up MySQL ...
-    - name: Set up MySQL
-      uses: mirromutth/mysql-action@v1.1
-      with:
-        # ... Set-up MySQL configuration, see Usage
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '5.7'
+          mysql database: 'test'
+          mysql root password: 'password'
 
-    - # ... some steps after set-up MySQL ...
+      - name: Set ENV
+        run: echo "MYSQL_PASS=\"password\"" > .env
 
-    # ... some another config ...
+      - name: Test
+        run: npm test
+
+

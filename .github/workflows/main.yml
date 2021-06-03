@@ -10,11 +10,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Use Node.js v12
-        uses: actions/setup-node@v1.4.0
-        with:
-          node-version: 12
-
       - name: Setup MySQL
         uses: mirromutth/mysql-action@v1.1
         with:

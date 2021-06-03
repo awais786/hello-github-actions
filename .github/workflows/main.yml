@@ -1,9 +1,7 @@
 jobs:
   build:
-    runs-on: ubuntu-${{ ubuntu-version }} # is Ubuntu environment
-
+    runs-on: ubuntu-20.04 is Ubuntu environment
     # ... some other config ...
-
     steps:
     - # ... some prepare steps, like action/checkout, run some script without MySQL, etc.
 

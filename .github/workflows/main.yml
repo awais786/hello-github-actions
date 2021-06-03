@@ -8,17 +8,16 @@ jobs:
     runs-on: ubuntu-20.04
 
     env:
-      php-ini-values: post_max_size=256M
-      wp-bp-directory: src/wp-content/plugins/buddypress
-      DB_DATABASE: wordpress_test
-      DB_USER: root
-      DB_PASSWORD: 'root'
-      DB_HOST: localhost
+      MYSQL_ROOT_PASSWORD: password
 
-    steps:
-      - run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE wordpress_test;' -u root -p root
-          mysql -e 'SHOW DATABASES;' -u root -p root
-      - name: Cancel previous runs of this workflow
-        uses: styfle/cancel-workflow-action@0.6.0
+      steps:
+        - name: Setup MySQL
+          uses: mirromutth/mysql-action@v1.1
+          with:
+            mysql root password: $MYSQL_ROOT_PASSWORD
+
+        - name: Wait for MySQL
+          run: |
+            while ! mysqladmin ping --host=127.0.0.1 --password=$MYSQL_ROOT_PASSWORD --silent; do
+              sleep 1
+            done

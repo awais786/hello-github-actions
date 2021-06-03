@@ -19,6 +19,6 @@ jobs:
       - run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE wordpress_test;' -u root -p root
-          mysql -e 'SHOW DATABASES;' -uroot -proot
+          mysql -e 'SHOW DATABASES;' -u root -p root
       - name: Cancel previous runs of this workflow
         uses: styfle/cancel-workflow-action@0.6.0

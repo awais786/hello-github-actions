@@ -1,23 +1,21 @@
-name: Tests
-
-on: [ push ]
-
 jobs:
-  tests:
+  build:
+    runs-on: ubuntu-${{ ubuntu-version }} # is Ubuntu environment
 
-    runs-on: ubuntu-20.04
+    # ... some other config ...
 
-    env:
-      MYSQL_ROOT_PASSWORD: password
+    steps:
+    - # ... some prepare steps, like action/checkout, run some script without MySQL, etc.
 
-      steps:
-        - name: Setup MySQL
-          uses: mirromutth/mysql-action@v1.1
-          with:
-            mysql root password: $MYSQL_ROOT_PASSWORD
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
 
-        - name: Wait for MySQL
-          run: |
-            while ! mysqladmin ping --host=127.0.0.1 --password=$MYSQL_ROOT_PASSWORD --silent; do
-              sleep 1
-            done
+    - # ... some steps before set-up MySQL ...
+    - name: Set up MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        # ... Set-up MySQL configuration, see Usage
+
+    - # ... some steps after set-up MySQL ...
+
+    # ... some another config ...

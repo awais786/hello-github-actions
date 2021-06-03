@@ -16,11 +16,9 @@ jobs:
           mysql version: '5.7'
           mysql database: 'test'
           mysql root password: 'password'
-      run: |
-        sudo /etc/init.d/mysql start
-        run: echo "MYSQL_PASS=\"password\"" > .env
-
-      - name: Test
-        run: npm test
-
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
+            sleep 1
+          done
 

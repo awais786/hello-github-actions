@@ -6,14 +6,12 @@ on:
 jobs:
   test:
     name: Ensure Unit Tests Running
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version: [ '3.8' ]
-        node-version: [ '12' ]
-        os: [ ubuntu-latest ]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             path: ~/.cache/pip
 
     steps:

@@ -18,30 +18,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-
-      - name: Get pip cache dir
-        id: pip-cache-dir
+      - name: Install Python dependencies
         run: |
-          echo "::set-output name=dir::$(pip cache dir)"
-
-      - name: Cache pip dependencies
-        id: cache-dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.pip-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/test.txt') }}
-          restore-keys: ${{ runner.os }}-pip-
-
-      - name: Install Required Python Dependencies
-        if: steps.cache-dependencies.output.cache-hit != 'true'
-        run: |
-          pip install setuptools wheel
           pip install -r requirements/test.txt
-
-      - name: Running pylint
-        run: |
-          . venv/bin/activate
-          pylint --rcfile=pylintrc hirestream *.py
 
       - name: Running tests
         run: |

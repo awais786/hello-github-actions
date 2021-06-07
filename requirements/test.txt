@@ -1,0 +1,12 @@
+bridgekeeper==0.9
+    # via -r requirements/edx/base.in
+celery==4.4.7
+    # via
+    #   -c requirements/edx/../constraints.txt
+    #   -r requirements/edx/base.in
+    #   django-celery-results
+    #   django-user-tasks
+    #   edx-celeryutils
+    #   edx-enterprise
+    #   event-tracking
+certifi==2021.5.30

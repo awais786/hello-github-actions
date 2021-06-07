@@ -1,27 +1,54 @@
-name: Tests
+name: GithubActions
 
 on:
   push:
 
 jobs:
   test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    name: Ensure Unit Tests Running
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [ '3.8' ]
+        node-version: [ '12' ]
+        os: [ ubuntu-latest ]
+        include:
+          - os: ubuntu-latest
+            path: ~/.cache/pip
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: '5.7'
-          mysql database: 'test'
-          mysql root password: 'password'
-      - name: Wait for MySQL
+      - name: Setup Folders
         run: |
-          sudo /etc/init.d/mysql start
-          while ! mysqladmin ping --host=127.0.0.1 --password=password --silent; do
-            sleep 1
-          done
+          mkdir hirestream/log
 
+      - name: Get pip cache dir
+        id: pip-cache-dir
+        run: |
+          echo "::set-output name=dir::$(pip cache dir)"
+
+      - name: Cache pip dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements/test.txt') }}
+          restore-keys: ${{ runner.os }}-pip-
+
+      - name: Install Required Python Dependencies
+        if: steps.cache-dependencies.output.cache-hit != 'true'
+        run: |
+          pip install setuptools wheel
+          pip install -r requirements/test.txt
+
+      - name: Running pylint
+        run: |
+          . venv/bin/activate
+          pylint --rcfile=pylintrc hirestream *.py
+
+      - name: Running tests
+        run: |
+          . venv/bin/activate
+          tox

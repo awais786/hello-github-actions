@@ -8,13 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Set N number of parallel jobs you want to run tests on.
-        # Use higher number if you have slow tests to split them on more parallel jobs.
-        # Remember to update ci_node_index below to 0..N-1
-        ci_node_total: [ 2 ]
-        # set N-1 indexes for parallel jobs
-        # When you run 2 parallel jobs then first job will have index 0, the second job will have index 1 etc
-        ci_node_index: [ 0, 1 ]
+        group: [ 1, 2, 3, 4, 5 ]
     env:
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
@@ -39,4 +33,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
-          pytest
+          pytest --cov --splits 5 --group ${{ matrix.group }}

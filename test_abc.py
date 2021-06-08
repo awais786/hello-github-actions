@@ -52,6 +52,9 @@ def test_wallet_spend_cash4(wallet):
     assert wallet.balance == 10
 
 
+def test_wallet_spend_cash5(wallet):
+    wallet.spend_cash(10)
+    assert wallet.balance == 10
 
 
 def test_wallet_spend_cash_raises_exception_on_insufficient_amount(empty_wallet):

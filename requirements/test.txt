@@ -11,3 +11,4 @@ celery==4.4.7
     #   event-tracking
 certifi==2021.5.30
 pytest-split
+pytest-shard

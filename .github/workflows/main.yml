@@ -40,4 +40,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --cov=. ${{ matrix.test-path }}
+          pytest --cov=. -n 2 ${{ matrix.test-path }}

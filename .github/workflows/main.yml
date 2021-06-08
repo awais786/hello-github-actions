@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        group: [1, 2, 3, 4, 5]
+        group: [ 1, 2, 3, 4, 5 ]
 
 #      matrix:
 #        test-path:
@@ -28,6 +28,7 @@ jobs:
           pip install -r requirements/test.txt
           pip install pytest-xdist
           pip install pytest-cov
+          pip install pytest-split
 
 
       - name: Lint with flake8
@@ -43,8 +44,8 @@ jobs:
 
       - name: Run pytest
         run: pytest --cov --splits 5 --group ${{ matrix.group }}
-          - name: Upload coverage
-            uses: actions/upload-artifact@v2
-            with:
-              name: coverage${{ matrix.group }}
-              path: .coverage
+      - name: Upload coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage${{ matrix.group }}
+          path: .coverage

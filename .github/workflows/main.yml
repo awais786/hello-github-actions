@@ -23,6 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           pip install -r requirements/test.txt
+          pip install pytest-xdist
+          pip install pytest-cov
+
 
       - name: Lint with flake8
         run: |
@@ -30,10 +33,11 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
       - name: Install plugin
         run: |
           pip install pytest-github-actions-annotate-failures
 
       - name: Test with pytest
         run: |
-          pytest ${{ matrix.test-path }}
+          pytest --cov=hello-github-actions ${{ matrix.test-path }}

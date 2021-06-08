@@ -32,4 +32,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --shard-id=I --num-shards=N
+          pytest --shard-id=1 --num-shards=2

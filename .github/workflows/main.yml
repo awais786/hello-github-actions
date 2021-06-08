@@ -8,9 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test-path:
-          - test_abc.py
-          - test_abcd.py
+        group: [1, 2, 3, 4, 5]
+
+#      matrix:
+#        test-path:
+#          - test_abc.py
+#          - test_abcd.py
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -38,6 +41,10 @@ jobs:
         run: |
           pip install pytest-github-actions-annotate-failures
 
-      - name: Test with pytest
-        run: |
-          pytest --cov=. -n 2 ${{ matrix.test-path }}
+      - name: Run pytest
+        run: pytest --cov --splits 5 --group ${{ matrix.group }}
+          - name: Upload coverage
+            uses: actions/upload-artifact@v2
+            with:
+              name: coverage${{ matrix.group }}
+              path: .coverage

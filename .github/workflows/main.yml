@@ -9,7 +9,9 @@ jobs:
     strategy:
       matrix:
         group: [1, 2, 3]
-
+        test-path:
+          - test_abc.py
+          - test_abcd.py
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -32,6 +34,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --shard-id=0 --num-shards=3
-          pytest --shard-id=1 --num-shards=3
-          pytest --shard-id=2 --num-shards=3
+          pytest ${{ matrix.test-path }}

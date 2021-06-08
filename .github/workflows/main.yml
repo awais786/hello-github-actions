@@ -40,4 +40,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --cov=hello-github-actions ${{ matrix.test-path }}
+          pytest --cov=. ${{ matrix.test-path }}

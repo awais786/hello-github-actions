@@ -13,7 +13,15 @@ jobs:
         include:
           - python-version: '3.8'
             toxenv: "django30"
+          - python-version: '3.8'
+            toxenv: "django31"
+          - python-version: '3.8'
+            toxenv: "django32"
         exclude:
+          - python-version: '2.7'
+            toxenv: "django30"
+          - python-version: '3.8'
+            toxenv: "django22"
           - python-version: "3.5"
             toxenv: "django30"
           - python-version: "3.5"

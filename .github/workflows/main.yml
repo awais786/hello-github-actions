@@ -24,5 +24,7 @@ jobs:
           pip install -r requirements/test.txt
 
       - name: Test with pytest
+        env:
+          TOXENV: ${{ matrix.django-version }}
         run: |
           pytest

@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        group: [1, 2, 3]
-        test-path:
-          - test_abc.py
-          - test_abcd.py
+        python-version: [ 'py38' ]
+        django-version: [ 'django22' ]
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -34,4 +33,4 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest ${{ matrix.test-path }}
+          pytest
